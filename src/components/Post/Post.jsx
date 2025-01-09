@@ -15,7 +15,7 @@ const Post = ({ post }) => {
         const net = ups - downs;
         const color = ups < downs ? 'red' : 'green';
         const sign = net >= 0 ? '+' : '-';
-    
+
         return (
             <span style={{ color: color }}>
                 {sign} {Math.abs(net)}
@@ -25,9 +25,23 @@ const Post = ({ post }) => {
 
     return (
         <div className='post'>
-            <h2>{post.title}</h2>
-            {post.thumbnail && post.thumbnail !== 'self' && post.thumbnail !== 'default' && (
-                <img src={post.thumbnail} alt={post.title} />
+            {post.media && post.media.oembed && post.media.oembed.url ? (
+                <iframe
+                    src={`https://twitframe.com/show?url=${post.media.oembed.url}`}
+                    width="500"
+                    height="600"
+                    frameBorder="0"
+                    scrolling="no"
+                    allowFullScreen
+                    title="Embedded Twitter Video"
+                />
+            ) : (
+                <>
+                    <h2>{post.title}</h2>
+                    {post.thumbnail && post.thumbnail !== 'self' && post.thumbnail !== 'default' && (
+                        <img src={post.thumbnail} alt={post.title} />
+                    )}
+                </>
             )}
             <div className='post-meta'>
                 <span>Author: <b>{post.author}</b></span>

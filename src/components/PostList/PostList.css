@@ -9,4 +9,5 @@
 .post-list > div {
     width: 50%;
     box-sizing: border-box;
+    overflow: auto;
 }
