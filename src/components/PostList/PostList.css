@@ -1,0 +1,12 @@
+.post-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    padding: 16px;
+}
+
+.post-list > div {
+    width: 50%;
+    box-sizing: border-box;
+}

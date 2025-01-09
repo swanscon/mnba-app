@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchPosts } from "../../utils/redditApi";
 import Post from "../Post/Post";
+import './PostList.css';
 
 const PostList = () => {
     const [posts, setPosts] = useState([]);
@@ -16,7 +17,7 @@ const PostList = () => {
     return (
         <div>
             <h1>r/NBA Posts</h1>
-            <div>
+            <div className="post-list">
                 {posts.slice(0, 25).map(post => {
                     return (
                         <div key={post.id}>

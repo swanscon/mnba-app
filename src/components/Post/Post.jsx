@@ -1,25 +1,58 @@
 import './Post.css';
-// import { getLastWordOrPhrase } from '../../helper/getLastWordOrPhrase';
+import { getLastWordOrPhrase } from '../../helper/getLastWordOrPhrase';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const Post = ({ post }) => {
-    const truncateText = (text, maxLength) => {
-        if (text.length > maxLength) {
-            return text.substring(0, maxLength) + '...';
-        }
-        return text;
+
+    const copyToClipboard = (link) => {
+        navigator.clipboard.writeText(link).then(() => {
+            alert('Copied to clipboard!');
+        });
     };
+
+    const netVotes = (ups, downs) => {
+        const net = ups - downs;
+        const color = ups < downs ? 'red' : 'green';
+        const sign = net >= 0 ? '+' : '-';
+    
+        return (
+            <span style={{ color: color }}>
+                {sign} {Math.abs(net)}
+            </span>
+        );
+    }
 
     return (
         <div className='post'>
             <h2>{post.title}</h2>
-            {/* <b>{getLastWordOrPhrase(post.author_flair_text)}</b> */}
-            <p>{truncateText(post.selftext || '', 100)}</p>
             {post.thumbnail && post.thumbnail !== 'self' && post.thumbnail !== 'default' && (
                 <img src={post.thumbnail} alt={post.title} />
             )}
-            <a href={`https://www.reddit.com${post.permalink}`} target="_blank" rel="noopener noreferrer">
-                Read more
-            </a>
+            <div className='post-meta'>
+                <span>Author: <b>{post.author}</b></span>
+                {post.author_flair_text && (
+                    <span className='author-flair'>{getLastWordOrPhrase(post.author_flair_text)}</span>
+                )}
+                {netVotes(post.ups, post.downs)}
+            </div>
+            <ReactMarkdown children={post.selftext} remarkPlugins={[remarkGfm]} />
+            <div className='post-buttons'>
+                <a
+                    href={`https://www.reddit.com${post.permalink}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className='discussion-button'
+                >
+                    View Discussion
+                </a>
+                <button
+                    onClick={() => copyToClipboard(`https://www.reddit.com${post.permalink}`)}
+                    className='copy-button'
+                >
+                    Copy Link
+                </button>
+            </div>
         </div>
     );
 };
