@@ -1,5 +1,6 @@
 import './Post.css';
 import { getLastWordOrPhrase } from '../../helper/getLastWordOrPhrase';
+import { getLastPath } from '../../helper/getLastPath';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -25,16 +26,32 @@ const Post = ({ post }) => {
 
     return (
         <div className='post'>
-            {post.media && post.media.oembed && post.media.oembed.url ? (
-                <iframe
-                    src={`https://twitframe.com/show?url=${post.media.oembed.url}`}
-                    width="500"
-                    height="600"
-                    frameBorder="0"
-                    scrolling="no"
-                    allowFullScreen
-                    title="Embedded Twitter Video"
-                />
+            {post.media && post.media.oembed ? (
+                post.url.includes('streamable.com') ? (
+                    (<>
+                        <h2>{post.title}</h2>
+                        <iframe
+                            className="streamable-embed"
+                            src={`https://streamable.com/o/${getLastPath(post.url)}`}
+                            frameborder="0"
+                            scrolling="no"
+                            height="550px"
+                            width="100%"
+                            allowfullscreen
+                            title="Streamable Video"
+                        ></iframe>
+                    </>
+                    )
+                ) :
+                    (<iframe
+                        src={`https://twitframe.com/show?url=${post.media.oembed.url}`}
+                        width="500"
+                        height="600"
+                        frameBorder="0"
+                        scrolling="no"
+                        allowFullScreen
+                        title="Embedded Twitter Video"
+                    />)
             ) : (
                 <>
                     <h2>{post.title}</h2>
