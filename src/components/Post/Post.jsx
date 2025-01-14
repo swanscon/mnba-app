@@ -24,12 +24,26 @@ const Post = ({ post }) => {
         );
     }
 
+    const postTitle = (title) => {
+        const size = title.length;
+        if (size > 80) {
+            return (
+                <h6>{title}</h6>
+            )
+        } else {
+            return (
+                <h2>{title}</h2>
+            )
+        }
+
+    }
+
     return (
         <div className='post'>
             {post.media && post.media.oembed ? (
                 post.url.includes('streamable.com') ? (
                     (<>
-                        <h2>{post.title}</h2>
+                        {postTitle(post.title)}
                         <iframe
                             className="streamable-embed"
                             src={`https://streamable.com/o/${getLastPath(post.url)}`}
@@ -54,10 +68,10 @@ const Post = ({ post }) => {
                     />)
             ) : (
                 <>
-                    <h2>{post.title}</h2>
-                    {post.thumbnail && post.thumbnail !== 'self' && post.thumbnail !== 'default' && (
+                    {postTitle(post.title)}
+                    {/* {post.thumbnail && post.thumbnail !== 'self' && post.thumbnail !== 'default' && (
                         <img src={post.thumbnail} alt={post.title} />
-                    )}
+                    )} */}
                 </>
             )}
             <div className='post-meta'>
